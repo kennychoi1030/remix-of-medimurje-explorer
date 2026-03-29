@@ -7,6 +7,7 @@ import { useAdmin } from "@/context/AdminContext";
 import { Button } from "@/components/ui/button";
 import TrailFormDialog from "@/components/TrailFormDialog";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
+import EditableText from "@/components/EditableText";
 import { toast } from "sonner";
 import {
   initTrailStore,
@@ -25,6 +26,10 @@ const TrailsSection = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [editingTrail, setEditingTrail] = useState<TrailData | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<TrailData | null>(null);
+
+  const [sectionTitle, setSectionTitle] = useState("Iconic Hong Kong Hikes");
+  const [sectionSubtitle, setSectionSubtitle] = useState("Featured Trails");
+  const [sectionDesc, setSectionDesc] = useState("From coastal cliff walks to misty mountain ridges, Hong Kong offers some of the most dramatic hiking in Asia.");
 
   useEffect(() => {
     initTrailStore(staticTrails);
@@ -68,34 +73,33 @@ const TrailsSection = () => {
     <section id="trails" className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
-          <p className={`section-subtitle mb-4 ${isInView ? "animate-fade-in" : "opacity-0"}`}>
-            Featured Trails
-          </p>
-          <h2
+          <EditableText
+            value={sectionSubtitle}
+            onChange={setSectionSubtitle}
+            as="p"
+            className={`section-subtitle mb-4 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+          />
+          <EditableText
+            value={sectionTitle}
+            onChange={setSectionTitle}
+            as="h2"
             className={`section-title text-foreground ${isInView ? "animate-fade-in" : "opacity-0"}`}
             style={{ animationDelay: "0.2s" }}
-          >
-            Iconic Hong Kong Hikes
-          </h2>
-          <p
+          />
+          <EditableText
+            value={sectionDesc}
+            onChange={setSectionDesc}
+            as="p"
             className={`mt-4 text-muted-foreground text-lg max-w-2xl mx-auto font-light ${isInView ? "animate-fade-in" : "opacity-0"}`}
             style={{ animationDelay: "0.3s" }}
-          >
-            From coastal cliff walks to misty mountain ridges, Hong Kong offers some of the most
-            dramatic hiking in Asia.
-          </p>
+            multiline
+          />
         </div>
 
         {/* Admin: Create button */}
         {isAdmin && (
           <div className="flex justify-end mb-6">
-            <Button
-              onClick={() => {
-                setEditingTrail(null);
-                setFormOpen(true);
-              }}
-              className="gap-2"
-            >
+            <Button onClick={() => { setEditingTrail(null); setFormOpen(true); }} className="gap-2">
               <Plus size={16} />
               Create New Trail
             </Button>
@@ -111,33 +115,16 @@ const TrailsSection = () => {
             >
               <Link to={`/trail/${trail.slug}`}>
                 <div className="overflow-hidden">
-                  <img
-                    src={trail.image}
-                    alt={trail.title}
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                    className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  <img src={trail.image} alt={trail.title} loading="lazy" width={800} height={600} className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div className="p-6">
-                  <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">
-                    {trail.title}
-                  </h3>
+                  <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">{trail.title}</h3>
                   <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1">
-                      <MapPin size={14} /> {trail.location}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} /> {trail.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <TrendingUp size={14} /> {trail.difficulty}
-                    </span>
+                    <span className="flex items-center gap-1"><MapPin size={14} /> {trail.location}</span>
+                    <span className="flex items-center gap-1"><Clock size={14} /> {trail.duration}</span>
+                    <span className="flex items-center gap-1"><TrendingUp size={14} /> {trail.difficulty}</span>
                   </div>
-                  <p className="text-muted-foreground font-light leading-relaxed text-sm">
-                    {trail.description}
-                  </p>
+                  <p className="text-muted-foreground font-light leading-relaxed text-sm">{trail.description}</p>
                 </div>
               </Link>
 
@@ -145,20 +132,13 @@ const TrailsSection = () => {
               {isAdmin && (
                 <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setEditingTrail(trail);
-                      setFormOpen(true);
-                    }}
+                    onClick={(e) => { e.preventDefault(); setEditingTrail(trail); setFormOpen(true); }}
                     className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     <Pencil size={14} />
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setDeleteTarget(trail);
-                    }}
+                    onClick={(e) => { e.preventDefault(); setDeleteTarget(trail); }}
                     className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
                   >
                     <Trash2 size={14} />
@@ -182,18 +162,15 @@ const TrailsSection = () => {
       {/* Dialogs */}
       <TrailFormDialog
         open={formOpen}
-        onOpenChange={(v) => {
-          setFormOpen(v);
-          if (!v) setEditingTrail(null);
-        }}
+        onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingTrail(null); }}
         trail={editingTrail}
         onSubmit={editingTrail ? handleUpdate : handleCreate}
       />
-
       <DeleteConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(v) => !v && setDeleteTarget(null)}
-        trailTitle={deleteTarget?.title ?? ""}
+        itemTitle={deleteTarget?.title ?? ""}
+        itemType="Trail"
         onConfirm={handleDelete}
       />
     </section>
