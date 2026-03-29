@@ -10,6 +10,8 @@ import AIAssistant from "./pages/AIAssistant.tsx";
 import Booking from "./pages/Booking.tsx";
 import GBAExplore from "./pages/GBAExplore.tsx";
 import TrailsListing from "./pages/TrailsListing.tsx";
+import EventsListing from "./pages/EventsListing.tsx";
+import ShopListing from "./pages/ShopListing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/explore" element={<GBAExplore />} />
+            <Route path="/events" element={<EventsListing />} />
+            <Route path="/shop" element={<ShopListing />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

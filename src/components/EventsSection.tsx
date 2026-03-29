@@ -1,68 +1,116 @@
+import { useState, useEffect, useCallback } from "react";
 import { useInView } from "@/hooks/use-in-view";
-import { Calendar, Users, MapPin } from "lucide-react";
-import sunsetImg from "@/assets/hk-event-sunset.jpg";
-import nightImg from "@/assets/hk-event-night.jpg";
-
-const events = [
-  {
-    image: sunsetImg,
-    title: "Sunset Summit Hike",
-    date: "April 12, 2026",
-    location: "Lion Rock, Kowloon",
-    spots: "20 spots left",
-    price: "HK$280",
-    description: "Watch the sun set over Victoria Harbour from Lion Rock's iconic summit. Includes guided hike and refreshments.",
-  },
-  {
-    image: nightImg,
-    title: "Night Trail Adventure",
-    date: "April 26, 2026",
-    location: "Lantau Peak",
-    spots: "15 spots left",
-    price: "HK$350",
-    description: "Experience Hong Kong's mountains after dark. Headlamp-lit trail with stargazing and hot drinks at the summit.",
-  },
-];
-
-const upcomingEvents = [
-  { title: "Beginner's Hike: The Peak Circle Walk", date: "May 3, 2026", price: "HK$150" },
-  { title: "Photography Hike: Sai Kung Geopark", date: "May 10, 2026", price: "HK$380" },
-  { title: "Full Moon Hike: Tai Mo Shan", date: "May 17, 2026", price: "HK$300" },
-];
+import { Calendar, Users, MapPin, Plus, Pencil, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { events as staticEvents, EventData } from "@/data/events";
+import { useAdmin } from "@/context/AdminContext";
+import { Button } from "@/components/ui/button";
+import EventFormDialog from "@/components/EventFormDialog";
+import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
+import EditableText from "@/components/EditableText";
+import { toast } from "sonner";
+import {
+  initEventStore,
+  getEventStore,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  restoreEvent,
+} from "@/services/event-api";
 
 const EventsSection = () => {
   const { ref, isInView } = useInView();
+  const { isAdmin } = useAdmin();
+
+  const [eventList, setEventList] = useState<EventData[]>([]);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<EventData | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<EventData | null>(null);
+
+  const [sectionTitle, setSectionTitle] = useState("Join Our Adventures");
+  const [sectionSubtitle, setSectionSubtitle] = useState("Upcoming Events");
+
+  useEffect(() => {
+    initEventStore(staticEvents);
+    setEventList(getEventStore());
+  }, []);
+
+  const refresh = () => setEventList([...getEventStore()]);
+
+  const handleCreate = async (data: Omit<EventData, "id" | "created_at">) => {
+    await createEvent(data);
+    refresh();
+    toast.success("Event created successfully!");
+  };
+
+  const handleUpdate = async (data: Omit<EventData, "id" | "created_at">) => {
+    if (!editingEvent) return;
+    await updateEvent(editingEvent.id, data);
+    refresh();
+    toast.success("Event updated successfully!");
+  };
+
+  const handleDelete = useCallback(async () => {
+    if (!deleteTarget) return;
+    const removed = deleteTarget;
+    await deleteEvent(removed.id);
+    refresh();
+    setDeleteTarget(null);
+    toast.success(`"${removed.title}" deleted`, {
+      action: {
+        label: "Undo",
+        onClick: async () => {
+          await restoreEvent(removed);
+          refresh();
+          toast.info("Event restored!");
+        },
+      },
+    });
+  }, [deleteTarget]);
+
+  // Show first 2 as featured, rest as list
+  const featured = eventList.slice(0, 2);
+  const upcoming = eventList.slice(2);
 
   return (
     <section id="events" className="py-24 lg:py-32 bg-muted/50">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
-          <p className={`section-subtitle mb-4 ${isInView ? "animate-fade-in" : "opacity-0"}`}>
-            Upcoming Events
-          </p>
-          <h2 className={`section-title text-foreground ${isInView ? "animate-fade-in" : "opacity-0"}`}
-              style={{ animationDelay: "0.2s" }}>
-            Join Our Adventures
-          </h2>
+          <EditableText
+            value={sectionSubtitle}
+            onChange={setSectionSubtitle}
+            as="p"
+            className={`section-subtitle mb-4 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+          />
+          <EditableText
+            value={sectionTitle}
+            onChange={setSectionTitle}
+            as="h2"
+            className={`section-title text-foreground ${isInView ? "animate-fade-in" : "opacity-0"}`}
+            style={{ animationDelay: "0.2s" }}
+          />
         </div>
+
+        {/* Admin: Create button */}
+        {isAdmin && (
+          <div className="flex justify-end mb-6">
+            <Button onClick={() => { setEditingEvent(null); setFormOpen(true); }} className="gap-2">
+              <Plus size={16} />
+              Create New Event
+            </Button>
+          </div>
+        )}
 
         {/* Featured events */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {events.map((event, i) => (
+          {featured.map((event, i) => (
             <div
-              key={event.title}
-              className={`group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+              key={event.id}
+              className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
               style={{ animationDelay: `${0.3 + i * 0.15}s` }}
             >
               <div className="overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  loading="lazy"
-                  width={800}
-                  height={600}
-                  className="w-full h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                <img src={event.image} alt={event.title} loading="lazy" width={800} height={600} className="w-full h-[260px] object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-3">
@@ -79,32 +127,91 @@ const EventsSection = () => {
                   Book Now
                 </button>
               </div>
+
+              {/* Admin action buttons */}
+              {isAdmin && (
+                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={() => { setEditingEvent(event); setFormOpen(true); }}
+                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  <button
+                    onClick={() => setDeleteTarget(event)}
+                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         {/* More events list */}
-        <div className={`bg-card rounded-lg p-6 shadow-sm ${isInView ? "animate-fade-in" : "opacity-0"}`}
-             style={{ animationDelay: "0.6s" }}>
-          <h3 className="font-display text-xl font-semibold text-card-foreground mb-4">More Upcoming Events</h3>
-          <div className="divide-y divide-border">
-            {upcomingEvents.map((event) => (
-              <div key={event.title} className="flex items-center justify-between py-4">
-                <div>
-                  <p className="font-medium text-card-foreground">{event.title}</p>
-                  <p className="text-sm text-muted-foreground">{event.date}</p>
+        {upcoming.length > 0 && (
+          <div className={`bg-card rounded-lg p-6 shadow-sm mb-12 ${isInView ? "animate-fade-in" : "opacity-0"}`} style={{ animationDelay: "0.6s" }}>
+            <h3 className="font-display text-xl font-semibold text-card-foreground mb-4">More Upcoming Events</h3>
+            <div className="divide-y divide-border">
+              {upcoming.map((event) => (
+                <div key={event.id} className="group/item relative flex items-center justify-between py-4">
+                  <div>
+                    <p className="font-medium text-card-foreground">{event.title}</p>
+                    <p className="text-sm text-muted-foreground">{event.date}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-primary font-semibold">{event.price}</span>
+                    <button className="h-8 px-4 rounded-md border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
+                      Details
+                    </button>
+                    {isAdmin && (
+                      <>
+                        <button
+                          onClick={() => { setEditingEvent(event); setFormOpen(true); }}
+                          className="p-1.5 rounded hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          <Pencil size={14} />
+                        </button>
+                        <button
+                          onClick={() => setDeleteTarget(event)}
+                          className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-primary font-semibold">{event.price}</span>
-                  <button className="h-8 px-4 rounded-md border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
-                    Details
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        )}
+
+        {/* Explore More button */}
+        <div className="flex justify-center mt-4">
+          <Link to="/events">
+            <Button size="lg" variant="outline" className="px-12 py-6 text-base font-medium tracking-wide">
+              Explore More Events
+            </Button>
+          </Link>
         </div>
       </div>
+
+      {/* Dialogs */}
+      <EventFormDialog
+        open={formOpen}
+        onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingEvent(null); }}
+        event={editingEvent}
+        onSubmit={editingEvent ? handleUpdate : handleCreate}
+      />
+      <DeleteConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        itemTitle={deleteTarget?.title ?? ""}
+        itemType="Event"
+        onConfirm={handleDelete}
+      />
     </section>
   );
 };

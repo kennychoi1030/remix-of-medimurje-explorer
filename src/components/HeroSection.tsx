@@ -1,7 +1,14 @@
+import { useState } from "react";
 import heroImage from "@/assets/hero-hk-hiking.jpg";
 import { ChevronDown } from "lucide-react";
+import EditableText from "@/components/EditableText";
 
 const HeroSection = () => {
+  const [subtitle, setSubtitle] = useState("Hong Kong Hiking");
+  const [titleLine1, setTitleLine1] = useState("Explore");
+  const [titleLine2, setTitleLine2] = useState("Hong Kong Trails");
+  const [desc, setDesc] = useState("Discover world-class hiking trails with breathtaking views of mountains, coastlines, and the iconic skyline.");
+
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
       <img
@@ -11,26 +18,29 @@ const HeroSection = () => {
         width={1920}
         height={1080}
       />
-      <div
-        className="absolute inset-0"
-        style={{ background: "var(--hero-overlay)" }}
-      />
+      <div className="absolute inset-0" style={{ background: "var(--hero-overlay)" }} />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-        <p className="text-primary-foreground/80 uppercase tracking-[0.4em] text-sm mb-6 animate-fade-in"
-           style={{ animationDelay: "0.3s", opacity: 0 }}>
-          Hong Kong Hiking
-        </p>
-        <h1 className="hero-title text-primary-foreground mb-6 animate-fade-in"
-            style={{ animationDelay: "0.6s", opacity: 0 }}>
-          <em className="font-light italic">Explore</em>
+        <EditableText
+          value={subtitle}
+          onChange={setSubtitle}
+          as="p"
+          className="text-primary-foreground/80 uppercase tracking-[0.4em] text-sm mb-6 animate-fade-in"
+          style={{ animationDelay: "0.3s" }}
+        />
+        <h1 className="hero-title text-primary-foreground mb-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+          <EditableText value={titleLine1} onChange={setTitleLine1} as="span" className="font-light italic" />
           <br />
-          <span className="font-semibold">Hong Kong Trails</span>
+          <EditableText value={titleLine2} onChange={setTitleLine2} as="span" className="font-semibold" />
         </h1>
-        <p className="text-primary-foreground/80 text-lg md:text-xl max-w-xl leading-relaxed font-light animate-fade-in"
-           style={{ animationDelay: "0.9s", opacity: 0 }}>
-          Discover world-class hiking trails with breathtaking views of mountains, coastlines, and the iconic skyline.
-        </p>
+        <EditableText
+          value={desc}
+          onChange={setDesc}
+          as="p"
+          className="text-primary-foreground/80 text-lg md:text-xl max-w-xl leading-relaxed font-light animate-fade-in"
+          style={{ animationDelay: "0.9s" }}
+          multiline
+        />
       </div>
 
       <a
