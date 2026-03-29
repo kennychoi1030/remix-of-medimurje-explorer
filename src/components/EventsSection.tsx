@@ -68,9 +68,9 @@ const EventsSection = () => {
     });
   }, [deleteTarget]);
 
-  // Show first 2 as featured, rest as list
-  const featured = eventList.slice(0, 2);
-  const upcoming = eventList.slice(2);
+  // Filter by isFeatured instead of hard-coded slicing
+  const featured = eventList.filter((e) => e.isFeatured);
+  const upcoming = eventList.filter((e) => !e.isFeatured);
 
   return (
     <section id="events" className="py-24 lg:py-32 bg-muted/50">

@@ -19,6 +19,7 @@ export const getEventStore = () => eventStore;
 /** POST /api/events */
 export async function createEvent(data: Omit<EventData, "id" | "created_at">): Promise<EventData> {
   // TODO: Connect to Laravel API — POST /api/events
+  // TODO: Laravel backend should handle this featured flag
   await delay();
   const event: EventData = {
     ...data,
@@ -32,6 +33,7 @@ export async function createEvent(data: Omit<EventData, "id" | "created_at">): P
 /** PUT /api/events/:id */
 export async function updateEvent(id: string, data: Partial<EventData>): Promise<EventData> {
   // TODO: Connect to Laravel API — PUT /api/events/${id}
+  // TODO: Laravel backend should handle this featured flag
   await delay();
   eventStore = eventStore.map((e) => (e.id === id ? { ...e, ...data } : e));
   return eventStore.find((e) => e.id === id)!;

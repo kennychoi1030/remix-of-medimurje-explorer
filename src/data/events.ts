@@ -11,6 +11,7 @@ export interface EventData {
   price: string;
   description: string;
   created_at: string;
+  isFeatured: boolean;
 }
 
 export const events: EventData[] = [
@@ -18,6 +19,7 @@ export const events: EventData[] = [
     id: "evt-1",
     image: sunsetImg,
     title: "Sunset Summit Hike",
+    isFeatured: true,
     date: "April 12, 2026",
     location: "Lion Rock, Kowloon",
     spots: "20 spots left",
@@ -29,6 +31,7 @@ export const events: EventData[] = [
     id: "evt-2",
     image: nightImg,
     title: "Night Trail Adventure",
+    isFeatured: true,
     date: "April 26, 2026",
     location: "Lantau Peak",
     spots: "15 spots left",
@@ -38,6 +41,7 @@ export const events: EventData[] = [
   },
   {
     id: "evt-3",
+    isFeatured: false,
     image: sunsetImg,
     title: "Beginner's Hike: The Peak Circle Walk",
     date: "May 3, 2026",
@@ -49,6 +53,7 @@ export const events: EventData[] = [
   },
   {
     id: "evt-4",
+    isFeatured: false,
     image: nightImg,
     title: "Photography Hike: Sai Kung Geopark",
     date: "May 10, 2026",
@@ -60,6 +65,7 @@ export const events: EventData[] = [
   },
   {
     id: "evt-5",
+    isFeatured: false,
     image: sunsetImg,
     title: "Full Moon Hike: Tai Mo Shan",
     date: "May 17, 2026",

@@ -107,7 +107,7 @@ const ShopSection = () => {
         )}
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {productList.map((product, i) => (
+          {productList.filter((p) => p.isFeatured).map((product, i) => (
             <div
               key={product.id}
               className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, ImageIcon } from "lucide-react";
@@ -20,6 +21,7 @@ const emptyForm = {
   price: "",
   description: "",
   image: "",
+  isFeatured: false,
 };
 
 const EventFormDialog = ({ open, onOpenChange, event, onSubmit }: Props) => {
@@ -37,6 +39,7 @@ const EventFormDialog = ({ open, onOpenChange, event, onSubmit }: Props) => {
         price: event.price,
         description: event.description,
         image: event.image,
+        isFeatured: event.isFeatured,
       });
     } else {
       setForm(emptyForm);
@@ -109,6 +112,13 @@ const EventFormDialog = ({ open, onOpenChange, event, onSubmit }: Props) => {
               </div>
             )}
           </div>
+
+          {/* Featured toggle */}
+          <div className="flex items-center justify-between rounded-md border border-border p-3">
+            <label className="text-sm font-medium text-foreground">Display on Homepage (精選)</label>
+            <Switch checked={form.isFeatured} onCheckedChange={(v) => setForm((f) => ({ ...f, isFeatured: v }))} />
+          </div>
+
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Cancel</Button>
             <Button type="submit" disabled={loading}>

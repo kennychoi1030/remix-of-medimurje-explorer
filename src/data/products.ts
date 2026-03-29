@@ -10,11 +10,13 @@ export interface ProductData {
   description: string;
   badge: string | null;
   created_at: string;
+  isFeatured: boolean;
 }
 
 export const products: ProductData[] = [
   {
     id: "prod-1",
+    isFeatured: true,
     image: gearImg,
     title: "Trail Explorer Pack",
     price: "HK$890",
@@ -25,6 +27,7 @@ export const products: ProductData[] = [
   },
   {
     id: "prod-2",
+    isFeatured: true,
     image: bootsImg,
     title: "Summit Pro Hiking Boots",
     price: "HK$1,280",
@@ -34,6 +37,7 @@ export const products: ProductData[] = [
   },
   {
     id: "prod-3",
+    isFeatured: true,
     image: gearImg,
     title: "Day Hike Essentials Kit",
     price: "HK$450",
@@ -43,6 +47,7 @@ export const products: ProductData[] = [
   },
   {
     id: "prod-4",
+    isFeatured: true,
     image: bootsImg,
     title: "Trail Runner Shoes",
     price: "HK$780",

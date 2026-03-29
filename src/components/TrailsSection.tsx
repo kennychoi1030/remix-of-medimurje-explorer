@@ -107,7 +107,7 @@ const TrailsSection = () => {
         )}
 
         <div className="grid md:grid-cols-3 gap-8">
-          {trailList.map((trail, i) => (
+          {trailList.filter((t) => t.isFeatured).map((trail, i) => (
             <div
               key={trail.slug}
               className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
