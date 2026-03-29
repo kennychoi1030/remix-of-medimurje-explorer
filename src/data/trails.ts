@@ -22,11 +22,13 @@ export interface TrailData {
   gallery: string[];
   elevationProfile: { km: number; elevation: number }[];
   routeSteps: { title: string; description: string }[];
+  isFeatured: boolean;
 }
 
 export const trails: TrailData[] = [
   {
     slug: "cape-daguilar",
+    isFeatured: true,
     image: coastalImg,
     title: "Cape D'Aguilar Trail",
     location: "Shek O, Hong Kong Island",
@@ -68,6 +70,7 @@ export const trails: TrailData[] = [
   },
   {
     slug: "tai-mo-shan",
+    isFeatured: true,
     image: jungleImg,
     title: "Tai Mo Shan Forest Walk",
     location: "New Territories",
@@ -110,6 +113,7 @@ export const trails: TrailData[] = [
   },
   {
     slug: "dragons-back",
+    isFeatured: true,
     image: dragonsBackImg,
     title: "Dragon's Back",
     location: "Shek O, Hong Kong Island",
