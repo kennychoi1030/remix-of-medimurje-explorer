@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, ImageIcon } from "lucide-react";
@@ -27,6 +28,7 @@ const emptyForm = {
   gallery: [] as string[],
   elevationProfile: [] as TrailData["elevationProfile"],
   routeSteps: [] as TrailData["routeSteps"],
+  isFeatured: false,
 };
 
 const TrailFormDialog = ({ open, onOpenChange, trail, onSubmit }: Props) => {
@@ -51,6 +53,7 @@ const TrailFormDialog = ({ open, onOpenChange, trail, onSubmit }: Props) => {
         gallery: trail.gallery,
         elevationProfile: trail.elevationProfile,
         routeSteps: trail.routeSteps,
+        isFeatured: trail.isFeatured,
       });
     } else {
       setForm(emptyForm);
@@ -157,6 +160,12 @@ const TrailFormDialog = ({ open, onOpenChange, trail, onSubmit }: Props) => {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Featured toggle */}
+          <div className="flex items-center justify-between rounded-md border border-border p-3">
+            <label className="text-sm font-medium text-foreground">Display on Homepage (精選)</label>
+            <Switch checked={form.isFeatured} onCheckedChange={(v) => setForm((f) => ({ ...f, isFeatured: v }))} />
           </div>
 
           <DialogFooter>
