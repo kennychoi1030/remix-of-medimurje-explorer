@@ -11,6 +11,7 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   product?: ProductData | null;
   onSubmit: (data: Omit<ProductData, "id" | "created_at">) => Promise<void>;
+  featuredCount?: number;
 }
 
 const emptyForm = {
@@ -23,7 +24,7 @@ const emptyForm = {
   isFeatured: false,
 };
 
-const ProductFormDialog = ({ open, onOpenChange, product, onSubmit }: Props) => {
+const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCount = 0 }: Props) => {
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const isEdit = !!product;
@@ -113,9 +114,12 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit }: Props) => 
           </div>
 
           {/* Featured toggle */}
-          <div className="flex items-center justify-between rounded-md border border-border p-3">
-            <label className="text-sm font-medium text-foreground">Display on Homepage (精選)</label>
-            <Switch checked={form.isFeatured} onCheckedChange={(v) => setForm((f) => ({ ...f, isFeatured: v }))} />
+          <div className="rounded-md border border-border p-3 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Display on Homepage (精選)</label>
+              <Switch checked={form.isFeatured} onCheckedChange={(v) => setForm((f) => ({ ...f, isFeatured: v }))} />
+            </div>
+            <p className="text-xs text-muted-foreground">目前已選擇 {featuredCount} 個首頁精選項目（建議：3-6 個）</p>
           </div>
 
           <DialogFooter>
