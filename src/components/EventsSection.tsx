@@ -36,6 +36,7 @@ const EventsSection = () => {
   }, []);
 
   const refresh = () => setEventList([...getEventStore()]);
+  const featuredCount = eventList.filter((e) => e.isFeatured).length;
 
   const handleCreate = async (data: Omit<EventData, "id" | "created_at">) => {
     await createEvent(data);
@@ -70,7 +71,6 @@ const EventsSection = () => {
 
   // Filter by isFeatured instead of hard-coded slicing
   const featured = eventList.filter((e) => e.isFeatured);
-  const upcoming = eventList.filter((e) => !e.isFeatured);
 
   return (
     <section id="events" className="py-24 lg:py-32 bg-muted/50">
@@ -102,91 +102,55 @@ const EventsSection = () => {
         )}
 
         {/* Featured events */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {featured.map((event, i) => (
-            <div
-              key={event.id}
-              className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
-              style={{ animationDelay: `${0.3 + i * 0.15}s` }}
-            >
-              <div className="overflow-hidden">
-                <img src={event.image} alt={event.title} loading="lazy" width={800} height={600} className="w-full h-[260px] object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-display text-xl font-semibold text-card-foreground">{event.title}</h3>
-                  <span className="text-primary font-semibold text-lg whitespace-nowrap ml-4">{event.price}</span>
+        {featured.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {featured.map((event, i) => (
+              <div
+                key={event.id}
+                className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+                style={{ animationDelay: `${0.3 + i * 0.15}s` }}
+              >
+                <div className="overflow-hidden">
+                  <img src={event.image} alt={event.title} loading="lazy" width={800} height={600} className="w-full h-[260px] object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
-                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
-                  <span className="flex items-center gap-1"><Calendar size={14} /> {event.date}</span>
-                  <span className="flex items-center gap-1"><MapPin size={14} /> {event.location}</span>
-                  <span className="flex items-center gap-1"><Users size={14} /> {event.spots}</span>
-                </div>
-                <p className="text-muted-foreground font-light leading-relaxed text-sm mb-4">{event.description}</p>
-                <button className="w-full h-10 rounded-md bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
-                  Book Now
-                </button>
-              </div>
-
-              {/* Admin action buttons */}
-              {isAdmin && (
-                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => { setEditingEvent(event); setFormOpen(true); }}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  <button
-                    onClick={() => setDeleteTarget(event)}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* More events list */}
-        {upcoming.length > 0 && (
-          <div className={`bg-card rounded-lg p-6 shadow-sm mb-12 ${isInView ? "animate-fade-in" : "opacity-0"}`} style={{ animationDelay: "0.6s" }}>
-            <h3 className="font-display text-xl font-semibold text-card-foreground mb-4">More Upcoming Events</h3>
-            <div className="divide-y divide-border">
-              {upcoming.map((event) => (
-                <div key={event.id} className="group/item relative flex items-center justify-between py-4">
-                  <div>
-                    <p className="font-medium text-card-foreground">{event.title}</p>
-                    <p className="text-sm text-muted-foreground">{event.date}</p>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="font-display text-xl font-semibold text-card-foreground">{event.title}</h3>
+                    <span className="text-primary font-semibold text-lg whitespace-nowrap ml-4">{event.price}</span>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-primary font-semibold">{event.price}</span>
-                    <button className="h-8 px-4 rounded-md border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
-                      Details
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
+                    <span className="flex items-center gap-1"><Calendar size={14} /> {event.date}</span>
+                    <span className="flex items-center gap-1"><MapPin size={14} /> {event.location}</span>
+                    <span className="flex items-center gap-1"><Users size={14} /> {event.spots}</span>
+                  </div>
+                  <p className="text-muted-foreground font-light leading-relaxed text-sm mb-4">{event.description}</p>
+                  <button className="w-full h-10 rounded-md bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
+                    Book Now
+                  </button>
+                </div>
+
+                {/* Admin action buttons */}
+                {isAdmin && (
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => { setEditingEvent(event); setFormOpen(true); }} className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors">
+                      <Pencil size={14} />
                     </button>
-                    {isAdmin && (
-                      <>
-                        <button
-                          onClick={() => { setEditingEvent(event); setFormOpen(true); }}
-                          className="p-1.5 rounded hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
-                        >
-                          <Pencil size={14} />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(event)}
-                          className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </>
-                    )}
+                    <button onClick={() => setDeleteTarget(event)} className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors">
+                      <Trash2 size={14} />
+                    </button>
                   </div>
-                </div>
-              ))}
-            </div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
+        ) : isAdmin ? (
+          <div className="text-center py-16 border-2 border-dashed border-border rounded-lg mb-12">
+            <p className="text-muted-foreground mb-4">尚未設定首頁精選活動</p>
+            <Link to="/events">
+              <Button variant="outline">前往列表頁設定精選內容</Button>
+            </Link>
+          </div>
+        ) : null}
 
         {/* Explore More button */}
         <div className="flex justify-center mt-4">
@@ -204,6 +168,7 @@ const EventsSection = () => {
         onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingEvent(null); }}
         event={editingEvent}
         onSubmit={editingEvent ? handleUpdate : handleCreate}
+        featuredCount={featuredCount}
       />
       <DeleteConfirmDialog
         open={!!deleteTarget}
