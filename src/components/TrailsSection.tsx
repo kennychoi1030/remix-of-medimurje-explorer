@@ -37,6 +37,8 @@ const TrailsSection = () => {
   }, []);
 
   const refresh = () => setTrailList([...getTrailStore()]);
+  const featured = trailList.filter((t) => t.isFeatured);
+  const featuredCount = featured.length;
 
   const handleCreate = async (data: Omit<TrailData, "slug">) => {
     await createTrail(data);
@@ -106,48 +108,57 @@ const TrailsSection = () => {
           </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {trailList.filter((t) => t.isFeatured).map((trail, i) => (
-            <div
-              key={trail.slug}
-              className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
-              style={{ animationDelay: `${0.3 + i * 0.15}s` }}
-            >
-              <Link to={`/trail/${trail.slug}`}>
-                <div className="overflow-hidden">
-                  <img src={trail.image} alt={trail.title} loading="lazy" width={800} height={600} className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110" />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">{trail.title}</h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1"><MapPin size={14} /> {trail.location}</span>
-                    <span className="flex items-center gap-1"><Clock size={14} /> {trail.duration}</span>
-                    <span className="flex items-center gap-1"><TrendingUp size={14} /> {trail.difficulty}</span>
+        {featured.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((trail, i) => (
+              <div
+                key={trail.slug}
+                className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+                style={{ animationDelay: `${0.3 + i * 0.15}s` }}
+              >
+                <Link to={`/trail/${trail.slug}`}>
+                  <div className="overflow-hidden">
+                    <img src={trail.image} alt={trail.title} loading="lazy" width={800} height={600} className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
-                  <p className="text-muted-foreground font-light leading-relaxed text-sm">{trail.description}</p>
-                </div>
-              </Link>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">{trail.title}</h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
+                      <span className="flex items-center gap-1"><MapPin size={14} /> {trail.location}</span>
+                      <span className="flex items-center gap-1"><Clock size={14} /> {trail.duration}</span>
+                      <span className="flex items-center gap-1"><TrendingUp size={14} /> {trail.difficulty}</span>
+                    </div>
+                    <p className="text-muted-foreground font-light leading-relaxed text-sm">{trail.description}</p>
+                  </div>
+                </Link>
 
-              {/* Admin action buttons */}
-              {isAdmin && (
-                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={(e) => { e.preventDefault(); setEditingTrail(trail); setFormOpen(true); }}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  <button
-                    onClick={(e) => { e.preventDefault(); setDeleteTarget(trail); }}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                {/* Admin action buttons */}
+                {isAdmin && (
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => { e.preventDefault(); setEditingTrail(trail); setFormOpen(true); }}
+                      className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => { e.preventDefault(); setDeleteTarget(trail); }}
+                      className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : isAdmin ? (
+          <div className="text-center py-16 border-2 border-dashed border-border rounded-lg">
+            <p className="text-muted-foreground mb-4">尚未設定首頁精選步道</p>
+            <Link to="/trails">
+              <Button variant="outline">前往列表頁設定精選內容</Button>
+            </Link>
+          </div>
+        ) : null}
 
         {/* Explore More button */}
         <div className="flex justify-center mt-16">
@@ -165,6 +176,7 @@ const TrailsSection = () => {
         onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingTrail(null); }}
         trail={editingTrail}
         onSubmit={editingTrail ? handleUpdate : handleCreate}
+        featuredCount={featuredCount}
       />
       <DeleteConfirmDialog
         open={!!deleteTarget}
