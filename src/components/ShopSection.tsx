@@ -37,6 +37,8 @@ const ShopSection = () => {
   }, []);
 
   const refresh = () => setProductList([...getProductStore()]);
+  const featured = productList.filter((p) => p.isFeatured);
+  const featuredCount = featured.length;
 
   const handleCreate = async (data: Omit<ProductData, "id" | "created_at">) => {
     await createProduct(data);
@@ -106,58 +108,58 @@ const ShopSection = () => {
           </div>
         )}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {productList.filter((p) => p.isFeatured).map((product, i) => (
-            <div
-              key={product.id}
-              className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
-              style={{ animationDelay: `${0.3 + i * 0.1}s` }}
-            >
-              <div className="relative overflow-hidden">
-                <img src={product.image} alt={product.title} loading="lazy" width={800} height={600} className="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110" />
-                {product.badge && (
-                  <span className={`absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold ${
-                    product.badge === "Sale" ? "bg-destructive text-destructive-foreground" : "bg-primary text-primary-foreground"
-                  }`}>
-                    {product.badge}
-                  </span>
-                )}
-              </div>
-              <div className="p-4">
-                <h3 className="font-display text-lg font-semibold text-card-foreground mb-1">{product.title}</h3>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-primary font-bold">{product.price}</span>
-                  {product.originalPrice && (
-                    <span className="text-muted-foreground text-sm line-through">{product.originalPrice}</span>
+        {featured.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((product, i) => (
+              <div
+                key={product.id}
+                className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
+                style={{ animationDelay: `${0.3 + i * 0.1}s` }}
+              >
+                <div className="relative overflow-hidden">
+                  <img src={product.image} alt={product.title} loading="lazy" width={800} height={600} className="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110" />
+                  {product.badge && (
+                    <span className={`absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold ${product.badge === "Sale" ? "bg-destructive text-destructive-foreground" : "bg-primary text-primary-foreground"}`}>
+                      {product.badge}
+                    </span>
                   )}
                 </div>
-                <p className="text-muted-foreground font-light text-sm leading-relaxed mb-4">{product.description}</p>
-                <button className="w-full flex items-center justify-center gap-2 h-9 rounded-md bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
-                  <ShoppingBag size={14} />
-                  Add to Cart
-                </button>
-              </div>
-
-              {/* Admin action buttons */}
-              {isAdmin && (
-                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => { setEditingProduct(product); setFormOpen(true); }}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  <button
-                    onClick={() => setDeleteTarget(product)}
-                    className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors"
-                  >
-                    <Trash2 size={14} />
+                <div className="p-4">
+                  <h3 className="font-display text-lg font-semibold text-card-foreground mb-1">{product.title}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-primary font-bold">{product.price}</span>
+                    {product.originalPrice && (
+                      <span className="text-muted-foreground text-sm line-through">{product.originalPrice}</span>
+                    )}
+                  </div>
+                  <p className="text-muted-foreground font-light text-sm leading-relaxed mb-4">{product.description}</p>
+                  <button className="w-full flex items-center justify-center gap-2 h-9 rounded-md bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
+                    <ShoppingBag size={14} /> Add to Cart
                   </button>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+
+                {/* Admin action buttons */}
+                {isAdmin && (
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => { setEditingProduct(product); setFormOpen(true); }} className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-primary hover:text-primary-foreground transition-colors">
+                      <Pencil size={14} />
+                    </button>
+                    <button onClick={() => setDeleteTarget(product)} className="p-2 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-destructive hover:text-destructive-foreground transition-colors">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : isAdmin ? (
+          <div className="text-center py-16 border-2 border-dashed border-border rounded-lg">
+            <p className="text-muted-foreground mb-4">尚未設定首頁精選商品</p>
+            <Link to="/shop">
+              <Button variant="outline">前往列表頁設定精選內容</Button>
+            </Link>
+          </div>
+        ) : null}
 
         {/* Browse All Products button */}
         <div className="flex justify-center mt-16">
@@ -175,6 +177,7 @@ const ShopSection = () => {
         onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingProduct(null); }}
         product={editingProduct}
         onSubmit={editingProduct ? handleUpdate : handleCreate}
+        featuredCount={featuredCount}
       />
       <DeleteConfirmDialog
         open={!!deleteTarget}
