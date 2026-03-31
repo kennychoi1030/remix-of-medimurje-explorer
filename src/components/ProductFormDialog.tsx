@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, ImageIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import ImageUpload from "@/components/ImageUpload";
 import type { ProductData } from "@/data/products";
 
 interface Props {
@@ -27,6 +28,8 @@ const emptyForm = {
 const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCount = 0 }: Props) => {
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const isEdit = !!product;
 
   useEffect(() => {
@@ -40,15 +43,29 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         image: product.image,
         isFeatured: product.isFeatured,
       });
+      setImagePreview(product.image);
+      setImageBlob(null);
     } else {
       setForm(emptyForm);
+      setImagePreview("");
+      setImageBlob(null);
     }
   }, [product, open]);
+
+  const handleImageChange = useCallback((blob: Blob | null, previewUrl: string) => {
+    setImageBlob(blob);
+    setImagePreview(previewUrl);
+    setForm((f) => ({ ...f, image: previewUrl }));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
+      // TODO: Connect to Laravel API - Build FormData for multipart upload
+      // const formData = new FormData();
+      // Object.entries(form).forEach(([k, v]) => formData.append(k, String(v)));
+      // if (imageBlob) formData.append('image', imageBlob, 'image.jpg');
       await onSubmit({
         ...form,
         originalPrice: form.originalPrice || undefined,
@@ -100,18 +117,9 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
-          <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">Image URL</label>
-            <Input value={form.image} onChange={(e) => set("image", e.target.value)} placeholder="https://example.com/image.jpg" />
-            {form.image && (
-              <div className="mt-2 relative rounded-md overflow-hidden border border-border h-32 bg-muted flex items-center justify-center">
-                <img src={form.image} alt="Preview" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <ImageIcon size={24} className="text-muted-foreground opacity-30" />
-                </div>
-              </div>
-            )}
-          </div>
+
+          {/* Image upload with Canvas resize & preview */}
+          <ImageUpload preview={imagePreview} onChange={handleImageChange} />
 
           {/* Featured toggle */}
           <div className="rounded-md border border-border p-3 space-y-1.5">
