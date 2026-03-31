@@ -9,6 +9,8 @@ import TrailFormDialog from "@/components/TrailFormDialog";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import EditableText from "@/components/EditableText";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { localize, type Lang } from "@/types/i18n";
 import {
   initTrailStore,
   getTrailStore,
@@ -21,15 +23,23 @@ import {
 const TrailsSection = () => {
   const { ref, isInView } = useInView();
   const { isAdmin } = useAdmin();
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.language === "zh" ? "zh" : "en") as Lang;
 
   const [trailList, setTrailList] = useState<TrailData[]>([]);
   const [formOpen, setFormOpen] = useState(false);
   const [editingTrail, setEditingTrail] = useState<TrailData | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<TrailData | null>(null);
 
-  const [sectionTitle, setSectionTitle] = useState("Iconic Hong Kong Hikes");
-  const [sectionSubtitle, setSectionSubtitle] = useState("Featured Trails");
-  const [sectionDesc, setSectionDesc] = useState("From coastal cliff walks to misty mountain ridges, Hong Kong offers some of the most dramatic hiking in Asia.");
+  const [sectionTitle, setSectionTitle] = useState(t("trails.title"));
+  const [sectionSubtitle, setSectionSubtitle] = useState(t("trails.subtitle"));
+  const [sectionDesc, setSectionDesc] = useState(t("trails.description"));
+
+  useEffect(() => {
+    setSectionTitle(t("trails.title"));
+    setSectionSubtitle(t("trails.subtitle"));
+    setSectionDesc(t("trails.description"));
+  }, [i18n.language, t]);
 
   useEffect(() => {
     initTrailStore(staticTrails);
@@ -43,14 +53,14 @@ const TrailsSection = () => {
   const handleCreate = async (data: Omit<TrailData, "slug">) => {
     await createTrail(data);
     refresh();
-    toast.success("Trail created successfully!");
+    toast.success(i18n.language === "zh" ? "路線建立成功！" : "Trail created successfully!");
   };
 
   const handleUpdate = async (data: Omit<TrailData, "slug">) => {
     if (!editingTrail) return;
     await updateTrail(editingTrail.slug, data);
     refresh();
-    toast.success("Trail updated successfully!");
+    toast.success(i18n.language === "zh" ? "路線更新成功！" : "Trail updated successfully!");
   };
 
   const handleDelete = useCallback(async () => {
@@ -59,7 +69,7 @@ const TrailsSection = () => {
     await deleteTrail(removed.slug);
     refresh();
     setDeleteTarget(null);
-    toast.success(`"${removed.title}" deleted`, {
+    toast.success(`"${localize(removed.title, lang)}" deleted`, {
       action: {
         label: "Undo",
         onClick: async () => {
@@ -69,7 +79,7 @@ const TrailsSection = () => {
         },
       },
     });
-  }, [deleteTarget]);
+  }, [deleteTarget, lang]);
 
   return (
     <section id="trails" className="py-24 lg:py-32">
@@ -98,12 +108,11 @@ const TrailsSection = () => {
           />
         </div>
 
-        {/* Admin: Create button */}
         {isAdmin && (
           <div className="flex justify-end mb-6">
             <Button onClick={() => { setEditingTrail(null); setFormOpen(true); }} className="gap-2">
               <Plus size={16} />
-              Create New Trail
+              {t("trails.createNew")}
             </Button>
           </div>
         )}
@@ -118,20 +127,19 @@ const TrailsSection = () => {
               >
                 <Link to={`/trail/${trail.slug}`}>
                   <div className="overflow-hidden">
-                    <img src={trail.image} alt={trail.title} loading="lazy" width={800} height={600} className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={trail.image} alt={localize(trail.title, lang)} loading="lazy" width={800} height={600} className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="p-6">
-                    <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">{trail.title}</h3>
+                    <h3 className="font-display text-xl font-semibold text-card-foreground mb-2">{localize(trail.title, lang)}</h3>
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
                       <span className="flex items-center gap-1"><MapPin size={14} /> {trail.location}</span>
                       <span className="flex items-center gap-1"><Clock size={14} /> {trail.duration}</span>
                       <span className="flex items-center gap-1"><TrendingUp size={14} /> {trail.difficulty}</span>
                     </div>
-                    <p className="text-muted-foreground font-light leading-relaxed text-sm">{trail.description}</p>
+                    <p className="text-muted-foreground font-light leading-relaxed text-sm">{localize(trail.description, lang)}</p>
                   </div>
                 </Link>
 
-                {/* Admin action buttons */}
                 {isAdmin && (
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
@@ -153,24 +161,22 @@ const TrailsSection = () => {
           </div>
         ) : isAdmin ? (
           <div className="text-center py-16 border-2 border-dashed border-border rounded-lg">
-            <p className="text-muted-foreground mb-4">尚未設定首頁精選步道</p>
+            <p className="text-muted-foreground mb-4">{t("trails.noFeatured")}</p>
             <Link to="/trails">
-              <Button variant="outline">前往列表頁設定精選內容</Button>
+              <Button variant="outline">{t("trails.goToList")}</Button>
             </Link>
           </div>
         ) : null}
 
-        {/* Explore More button */}
         <div className="flex justify-center mt-16">
           <Link to="/trails">
             <Button size="lg" variant="outline" className="px-12 py-6 text-base font-medium tracking-wide">
-              Explore More Trails
+              {t("trails.exploreMore")}
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Dialogs */}
       <TrailFormDialog
         open={formOpen}
         onOpenChange={(v) => { setFormOpen(v); if (!v) setEditingTrail(null); }}
@@ -181,7 +187,7 @@ const TrailsSection = () => {
       <DeleteConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(v) => !v && setDeleteTarget(null)}
-        itemTitle={deleteTarget?.title ?? ""}
+        itemTitle={deleteTarget ? localize(deleteTarget.title, lang) : ""}
         itemType="Trail"
         onConfirm={handleDelete}
       />

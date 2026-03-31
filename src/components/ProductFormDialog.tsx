@@ -1,11 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
+import { useTranslation } from "react-i18next";
 import type { ProductData } from "@/data/products";
+import type { Localizable } from "@/types/i18n";
 
 interface Props {
   open: boolean;
@@ -15,11 +18,13 @@ interface Props {
   featuredCount?: number;
 }
 
+const emptyLocalizable: Localizable = { en: "", zh: "" };
+
 const emptyForm = {
-  title: "",
+  title: { ...emptyLocalizable },
   price: "",
   originalPrice: "",
-  description: "",
+  description: { ...emptyLocalizable },
   badge: "" as string | null,
   image: "",
   isFeatured: false,
@@ -30,15 +35,16 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
   const [loading, setLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [imagePreview, setImagePreview] = useState("");
+  const { t } = useTranslation();
   const isEdit = !!product;
 
   useEffect(() => {
     if (product) {
       setForm({
-        title: product.title,
+        title: { ...product.title },
         price: product.price,
         originalPrice: product.originalPrice ?? "",
-        description: product.description,
+        description: { ...product.description },
         badge: product.badge ?? "",
         image: product.image,
         isFeatured: product.isFeatured,
@@ -46,7 +52,7 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
       setImagePreview(product.image);
       setImageBlob(null);
     } else {
-      setForm(emptyForm);
+      setForm({ ...emptyForm, title: { ...emptyLocalizable }, description: { ...emptyLocalizable } });
       setImagePreview("");
       setImageBlob(null);
     }
@@ -64,7 +70,7 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
     try {
       // TODO: Connect to Laravel API - Build FormData for multipart upload
       // const formData = new FormData();
-      // Object.entries(form).forEach(([k, v]) => formData.append(k, String(v)));
+      // formData.append('title', JSON.stringify(form.title));
       // if (imageBlob) formData.append('image', imageBlob, 'image.jpg');
       await onSubmit({
         ...form,
@@ -79,21 +85,46 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
   };
 
   const set = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
+  const setLocalized = (key: "title" | "description", lang: "en" | "zh", value: string) =>
+    setForm((f) => ({ ...f, [key]: { ...f[key], [lang]: value } }));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">
-            {isEdit ? "Edit Product" : "Create New Product"}
+            {isEdit ? t("admin.editProduct") : t("admin.createProduct")}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <Tabs defaultValue="en">
+            <TabsList className="w-full">
+              <TabsTrigger value="en" className="flex-1">English</TabsTrigger>
+              <TabsTrigger value="zh" className="flex-1">繁體中文</TabsTrigger>
+            </TabsList>
+            <TabsContent value="en" className="space-y-3 mt-3">
+              <div>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">Title (EN) *</label>
+                <Input value={form.title.en} onChange={(e) => setLocalized("title", "en", e.target.value)} required />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">Description (EN) *</label>
+                <textarea value={form.description.en} onChange={(e) => setLocalized("description", "en", e.target.value)} rows={3} required className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+              </div>
+            </TabsContent>
+            <TabsContent value="zh" className="space-y-3 mt-3">
+              <div>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">標題 (ZH) *</label>
+                <Input value={form.title.zh} onChange={(e) => setLocalized("title", "zh", e.target.value)} required />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">描述 (ZH) *</label>
+                <textarea value={form.description.zh} onChange={(e) => setLocalized("description", "zh", e.target.value)} rows={3} required className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+              </div>
+            </TabsContent>
+          </Tabs>
+
           <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <label className="text-sm font-medium text-foreground mb-1.5 block">Title *</label>
-              <Input value={form.title} onChange={(e) => set("title", e.target.value)} required />
-            </div>
             <div>
               <label className="text-sm font-medium text-foreground mb-1.5 block">Price *</label>
               <Input value={form.price} onChange={(e) => set("price", e.target.value)} placeholder="e.g. HK$890" required />
@@ -107,34 +138,22 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
               <Input value={form.badge ?? ""} onChange={(e) => set("badge", e.target.value)} placeholder="e.g. Best Seller, Sale, New" />
             </div>
           </div>
-          <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">Description *</label>
-            <textarea
-              value={form.description}
-              onChange={(e) => set("description", e.target.value)}
-              rows={3}
-              required
-              className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-          </div>
 
-          {/* Image upload with Canvas resize & preview */}
           <ImageUpload preview={imagePreview} onChange={handleImageChange} />
 
-          {/* Featured toggle */}
           <div className="rounded-md border border-border p-3 space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-foreground">Display on Homepage (精選)</label>
+              <label className="text-sm font-medium text-foreground">{t("admin.featuredToggle")}</label>
               <Switch checked={form.isFeatured} onCheckedChange={(v) => setForm((f) => ({ ...f, isFeatured: v }))} />
             </div>
-            <p className="text-xs text-muted-foreground">目前已選擇 {featuredCount} 個首頁精選項目（建議：3-6 個）</p>
+            <p className="text-xs text-muted-foreground">{t("admin.featuredCount", { count: featuredCount })}</p>
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Cancel</Button>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>{t("admin.cancel")}</Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEdit ? "Update Product" : "Create Product"}
+              {isEdit ? t("admin.updateBtn") : t("admin.createBtn")}
             </Button>
           </DialogFooter>
         </form>

@@ -5,19 +5,20 @@ import dragonsBack2 from "@/assets/trail-dragons-back-2.jpg";
 import dragonsBack3 from "@/assets/trail-dragons-back-3.jpg";
 import coastal2 from "@/assets/trail-coastal-2.jpg";
 import jungle2 from "@/assets/trail-jungle-2.jpg";
+import type { Localizable } from "@/types/i18n";
 
 export interface TrailData {
   slug: string;
   image: string;
-  title: string;
+  title: Localizable;
   location: string;
   duration: string;
   difficulty: "Easy" | "Moderate" | "Hard";
   distance: string;
   elevation: string;
   bestSeason: string;
-  description: string;
-  longDescription: string;
+  description: Localizable;
+  longDescription: Localizable;
   highlights: string[];
   gallery: string[];
   elevationProfile: { km: number; elevation: number }[];
@@ -30,17 +31,21 @@ export const trails: TrailData[] = [
     slug: "cape-daguilar",
     isFeatured: true,
     image: coastalImg,
-    title: "Cape D'Aguilar Trail",
+    title: { en: "Cape D'Aguilar Trail", zh: "鶴咀海岸步道" },
     location: "Shek O, Hong Kong Island",
     duration: "3 hours",
     difficulty: "Moderate",
     distance: "7.5 km",
     elevation: "320 m",
     bestSeason: "Oct – Mar",
-    description:
-      "A stunning coastal hike along dramatic sea cliffs with panoramic views of the South China Sea and secluded beaches.",
-    longDescription:
-      "Cape D'Aguilar Marine Reserve sits at the southeastern tip of Hong Kong Island, offering one of the territory's most spectacular coastal walks. The trail meanders along volcanic rock formations, past tide pools teeming with marine life, and through windswept grasslands overlooking the open sea. The historic Cape D'Aguilar Lighthouse, built in 1875, marks the halfway point and provides a perfect rest stop with unobstructed ocean views.",
+    description: {
+      en: "A stunning coastal hike along dramatic sea cliffs with panoramic views of the South China Sea and secluded beaches.",
+      zh: "沿著壯觀的海崖徒步，飽覽南中國海全景及隱蔽沙灘的絕美海岸行山路線。",
+    },
+    longDescription: {
+      en: "Cape D'Aguilar Marine Reserve sits at the southeastern tip of Hong Kong Island, offering one of the territory's most spectacular coastal walks. The trail meanders along volcanic rock formations, past tide pools teeming with marine life, and through windswept grasslands overlooking the open sea. The historic Cape D'Aguilar Lighthouse, built in 1875, marks the halfway point and provides a perfect rest stop with unobstructed ocean views.",
+      zh: "鶴咀海岸保護區位於香港島東南端，提供本港最壯觀的海岸步道之一。路線沿火山岩石地貌蜿蜒而行，途經充滿海洋生物的潮池，穿越面向大海的風蝕草地。建於1875年的歷史性鶴咀燈塔標誌著中途點，提供無遮擋的海景休息站。",
+    },
     highlights: [
       "Cape D'Aguilar Lighthouse (1875)",
       "Volcanic rock formations & tide pools",
@@ -72,17 +77,21 @@ export const trails: TrailData[] = [
     slug: "tai-mo-shan",
     isFeatured: true,
     image: jungleImg,
-    title: "Tai Mo Shan Forest Walk",
+    title: { en: "Tai Mo Shan Forest Walk", zh: "大帽山森林步道" },
     location: "New Territories",
     duration: "4 hours",
     difficulty: "Easy",
     distance: "9 km",
     elevation: "450 m",
     bestSeason: "Nov – Feb",
-    description:
-      "Wander through lush subtropical forest to Hong Kong's highest peak, discovering waterfalls and rare flora along the way.",
-    longDescription:
-      "At 957 metres, Tai Mo Shan is Hong Kong's tallest mountain, and the forest walk to its summit is one of the territory's most rewarding nature experiences. The trail winds through dense subtropical woodland, past cascading streams and waterfalls, and through groves of rhododendrons that bloom in vivid colour during spring. On clear days the summit offers 360-degree views stretching from Shenzhen to Lantau Island.",
+    description: {
+      en: "Wander through lush subtropical forest to Hong Kong's highest peak, discovering waterfalls and rare flora along the way.",
+      zh: "穿越繁茂的亞熱帶森林前往香港最高峰，沿途發現瀑布與稀有植物。",
+    },
+    longDescription: {
+      en: "At 957 metres, Tai Mo Shan is Hong Kong's tallest mountain, and the forest walk to its summit is one of the territory's most rewarding nature experiences. The trail winds through dense subtropical woodland, past cascading streams and waterfalls, and through groves of rhododendrons that bloom in vivid colour during spring. On clear days the summit offers 360-degree views stretching from Shenzhen to Lantau Island.",
+      zh: "大帽山海拔957米，是香港最高的山峰，前往山頂的森林步道是本港最具回報的自然體驗之一。路線穿越茂密的亞熱帶林地，經過潺潺溪流與瀑布，以及春季盛放的杜鵑花叢。晴朗時山頂可360度遠眺深圳至大嶼山。",
+    },
     highlights: [
       "Hong Kong's highest peak (957 m)",
       "Subtropical forest canopy",
@@ -115,17 +124,21 @@ export const trails: TrailData[] = [
     slug: "dragons-back",
     isFeatured: true,
     image: dragonsBackImg,
-    title: "Dragon's Back",
+    title: { en: "Dragon's Back", zh: "龍脊" },
     location: "Shek O, Hong Kong Island",
     duration: "2.5 hours",
     difficulty: "Moderate",
     distance: "8.5 km",
     elevation: "284 m",
     bestSeason: "Oct – Apr",
-    description:
-      "Named Asia's best urban hike, this iconic ridge trail offers sweeping views of the coastline and city skyline.",
-    longDescription:
-      "Dragon's Back is Hong Kong's most celebrated trail, consistently ranked among the world's great urban hikes. The undulating ridge — said to resemble the spine of a dragon — provides constantly changing vistas of Shek O, Big Wave Bay, the South China Sea, and the distant skyscrapers of Hong Kong Island. The trail is well-maintained with clear signage, making it accessible to hikers of all experience levels while still delivering a genuinely dramatic landscape experience.",
+    description: {
+      en: "Named Asia's best urban hike, this iconic ridge trail offers sweeping views of the coastline and city skyline.",
+      zh: "被評為亞洲最佳城市行山路線，這條標誌性的山脊步道可飽覽海岸線與城市天際線。",
+    },
+    longDescription: {
+      en: "Dragon's Back is Hong Kong's most celebrated trail, consistently ranked among the world's great urban hikes. The undulating ridge — said to resemble the spine of a dragon — provides constantly changing vistas of Shek O, Big Wave Bay, the South China Sea, and the distant skyscrapers of Hong Kong Island. The trail is well-maintained with clear signage, making it accessible to hikers of all experience levels while still delivering a genuinely dramatic landscape experience.",
+      zh: "龍脊是香港最負盛名的行山路線，屢獲選為世界頂級城市行山路線。起伏的山脊 — 據說形似龍的脊背 — 不斷變換石澳、大浪灣、南中國海及遠處港島摩天大樓的景觀。路線維護良好、指示清晰，適合各級行山人士，同時提供真正壯觀的風景體驗。",
+    },
     highlights: [
       "Asia's best urban hike (Time Magazine)",
       "Dramatic ridge-line panoramas",

@@ -1,14 +1,16 @@
 import { useInView } from "@/hooks/use-in-view";
-
-const stats = [
-  { value: "200+", label: "Hiking Trails" },
-  { value: "24", label: "Country Parks" },
-  { value: "5,000+", label: "Happy Hikers" },
-  { value: "100+", label: "Events per Year" },
-];
+import { useTranslation } from "react-i18next";
 
 const StatsSection = () => {
   const { ref, isInView } = useInView();
+  const { t } = useTranslation();
+
+  const stats = [
+    { value: "200+", label: t("stats.trails") },
+    { value: "24", label: t("stats.parks") },
+    { value: "5,000+", label: t("stats.hikers") },
+    { value: "100+", label: t("stats.events") },
+  ];
 
   return (
     <section className="py-20 bg-foreground text-background">

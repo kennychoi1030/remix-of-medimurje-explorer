@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "trails": "行山路線",
+    "exploreGBA": "探索大灣區",
+    "events": "活動",
+    "shop": "裝備商店",
+    "aiAssistant": "AI 助手",
+    "bookNow": "立即預約",
+    "login": "登入"
+  },
+  "hero": {
+    "subtitle": "香港行山",
+    "titleLine1": "探索",
+    "titleLine2": "香港行山路線",
+    "description": "發掘世界級行山路線，飽覽山巒、海岸線與城市天際線的壯麗景色。"
+  },
+  "trails": {
+    "subtitle": "精選路線",
+    "title": "香港經典行山路線",
+    "description": "從海岸懸崖步道到雲霧繚繞的山脊，香港擁有亞洲最壯觀的行山體驗。",
+    "exploreMore": "探索更多路線",
+    "createNew": "新增路線",
+    "allTrails": "所有路線",
+    "exploreEvery": "瀏覽所有路線",
+    "browseDesc": "瀏覽、篩選，找到你下次冒險的完美路線。",
+    "noFeatured": "尚未設定精選路線",
+    "goToList": "前往列表頁設定精選內容",
+    "noResults": "找不到路線",
+    "noResultsDesc": "未能找到符合篩選條件的路線，請嘗試調整搜尋條件或重設所有篩選。",
+    "resetFilters": "重設篩選",
+    "searchPlaceholder": "搜尋路線...",
+    "allDifficulties": "所有難度",
+    "allLocations": "所有地區",
+    "allDurations": "所有時長",
+    "filters": "篩選條件",
+    "found_one": "找到 {{count}} 條路線",
+    "found_other": "找到 {{count}} 條路線"
+  },
+  "events": {
+    "subtitle": "即將舉行的活動",
+    "title": "加入我們的探險",
+    "exploreMore": "瀏覽更多活動",
+    "createNew": "新增活動",
+    "bookNow": "立即預約",
+    "allEvents": "所有活動",
+    "browseDesc": "瀏覽並預約香港各區的行山活動。",
+    "noFeatured": "尚未設定精選活動",
+    "goToList": "前往列表頁設定精選內容",
+    "noResults": "找不到符合條件的活動。",
+    "searchPlaceholder": "搜尋活動...",
+    "allLocations": "所有地區"
+  },
+  "shop": {
+    "subtitle": "裝備商店",
+    "title": "裝備你的冒險",
+    "description": "由我們的行山專家為香港獨特地形精選的優質行山裝備。",
+    "browseAll": "瀏覽所有商品",
+    "createNew": "新增商品",
+    "addToCart": "加入購物車",
+    "allProducts": "所有商品",
+    "browseDesc": "為香港獨特地形精選的優質行山裝備。",
+    "noFeatured": "尚未設定精選商品",
+    "goToList": "前往列表頁設定精選內容",
+    "noResults": "找不到符合條件的商品。",
+    "searchPlaceholder": "搜尋商品...",
+    "allCategories": "所有分類"
+  },
+  "stats": {
+    "trails": "行山路線",
+    "parks": "郊野公園",
+    "hikers": "快樂行山者",
+    "events": "每年活動"
+  },
+  "footer": {
+    "tagline": "你的香港優質行山體驗指南。我們為戶外愛好者連接難忘的路線、導賞活動與優質裝備。",
+    "explore": "探索",
+    "hikingTrails": "行山路線",
+    "gearShop": "裝備商店",
+    "safetyGuide": "行山安全指南",
+    "contact": "聯絡我們",
+    "rights": "版權所有。"
+  },
+  "admin": {
+    "edit": "編輯",
+    "delete": "刪除",
+    "featured": "首頁精選",
+    "featuredToggle": "在首頁顯示（精選）",
+    "featuredCount": "目前已選擇 {{count}} 個精選項目（建議：3-6 個）",
+    "cancel": "取消",
+    "editTrail": "編輯路線",
+    "createTrail": "新增路線",
+    "editEvent": "編輯活動",
+    "createEvent": "新增活動",
+    "editProduct": "編輯商品",
+    "createProduct": "新增商品",
+    "updateBtn": "更新",
+    "createBtn": "建立"
+  },
+  "trailDetail": {
+    "back": "返回",
+    "distance": "距離",
+    "duration": "時長",
+    "elevation": "海拔",
+    "difficulty": "難度",
+    "bestSeason": "最佳季節",
+    "location": "地點",
+    "elevationProfile": "海拔剖面圖",
+    "routeGuide": "路線指南",
+    "highlights": "路線亮點",
+    "gallery": "相片集",
+    "notFound": "找不到路線",
+    "backToHome": "← 返回首頁"
+  },
+  "login": {
+    "title": "會員登入",
+    "email": "電郵地址",
+    "password": "密碼",
+    "signIn": "登入",
+    "noAccount": "還沒有帳戶？",
+    "signUp": "註冊"
+  },
+  "common": {
+    "reset": "重設"
+  }
+}
