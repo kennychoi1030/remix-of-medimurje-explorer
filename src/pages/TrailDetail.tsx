@@ -2,6 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { trails } from "@/data/trails";
 import { ArrowLeft, MapPin, Clock, TrendingUp, Ruler, Mountain, Sun, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { localize, type Lang } from "@/types/i18n";
 import {
   AreaChart,
   Area,
@@ -16,34 +18,35 @@ const TrailDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const trail = trails.find((t) => t.slug === slug);
   const [selectedImg, setSelectedImg] = useState(0);
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.language === "zh" ? "zh" : "en") as Lang;
 
   if (!trail) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="font-display text-3xl font-semibold text-foreground mb-4">Trail Not Found</h1>
-          <Link to="/" className="text-primary hover:underline">← Back to Home</Link>
+          <h1 className="font-display text-3xl font-semibold text-foreground mb-4">{t("trailDetail.notFound")}</h1>
+          <Link to="/" className="text-primary hover:underline">{t("trailDetail.backToHome")}</Link>
         </div>
       </div>
     );
   }
 
   const stats = [
-    { icon: Ruler, label: "Distance", value: trail.distance },
-    { icon: Clock, label: "Duration", value: trail.duration },
-    { icon: Mountain, label: "Elevation", value: trail.elevation },
-    { icon: TrendingUp, label: "Difficulty", value: trail.difficulty },
-    { icon: Sun, label: "Best Season", value: trail.bestSeason },
-    { icon: MapPin, label: "Location", value: trail.location },
+    { icon: Ruler, label: t("trailDetail.distance"), value: trail.distance },
+    { icon: Clock, label: t("trailDetail.duration"), value: trail.duration },
+    { icon: Mountain, label: t("trailDetail.elevation"), value: trail.elevation },
+    { icon: TrendingUp, label: t("trailDetail.difficulty"), value: trail.difficulty },
+    { icon: Sun, label: t("trailDetail.bestSeason"), value: trail.bestSeason },
+    { icon: MapPin, label: t("trailDetail.location"), value: trail.location },
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <img
           src={trail.gallery[selectedImg]}
-          alt={trail.title}
+          alt={localize(trail.title, lang)}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
           width={1280}
           height={720}
@@ -53,21 +56,19 @@ const TrailDetail = () => {
           to="/"
           className="absolute top-6 left-6 z-10 flex items-center gap-2 text-primary-foreground/90 hover:text-primary-foreground bg-foreground/30 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium transition-colors"
         >
-          <ArrowLeft size={16} /> Back
+          <ArrowLeft size={16} /> {t("trailDetail.back")}
         </Link>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 -mt-24 relative z-10">
-        {/* Title & Meta */}
         <div className="mb-10">
           <span className="inline-block px-3 py-1 rounded-full text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary mb-4">
             {trail.difficulty}
           </span>
-          <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-3">{trail.title}</h1>
-          <p className="text-muted-foreground text-lg font-light leading-relaxed max-w-3xl">{trail.longDescription}</p>
+          <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-3">{localize(trail.title, lang)}</h1>
+          <p className="text-muted-foreground text-lg font-light leading-relaxed max-w-3xl">{localize(trail.longDescription, lang)}</p>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
           {stats.map(({ icon: Icon, label, value }) => (
             <div key={label} className="bg-card rounded-lg p-4 text-center shadow-sm">
@@ -78,9 +79,8 @@ const TrailDetail = () => {
           ))}
         </div>
 
-        {/* Elevation Profile */}
         <div className="mb-16">
-          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">Elevation Profile</h2>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">{t("trailDetail.elevationProfile")}</h2>
           <div className="bg-card rounded-lg p-6 shadow-sm">
             <ResponsiveContainer width="100%" height={280}>
               <AreaChart data={trail.elevationProfile} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -91,42 +91,21 @@ const TrailDetail = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis
-                  dataKey="km"
-                  tickFormatter={(v) => `${v} km`}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                  axisLine={{ stroke: "hsl(var(--border))" }}
-                />
-                <YAxis
-                  tickFormatter={(v) => `${v} m`}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                  axisLine={{ stroke: "hsl(var(--border))" }}
-                />
+                <XAxis dataKey="km" tickFormatter={(v) => `${v} km`} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }} axisLine={{ stroke: "hsl(var(--border))" }} />
+                <YAxis tickFormatter={(v) => `${v} m`} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }} axisLine={{ stroke: "hsl(var(--border))" }} />
                 <Tooltip
-                  contentStyle={{
-                    background: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                    fontSize: "12px",
-                  }}
-                  formatter={(value: number) => [`${value} m`, "Elevation"]}
+                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }}
+                  formatter={(value: number) => [`${value} m`, t("trailDetail.elevation")]}
                   labelFormatter={(label) => `${label} km`}
                 />
-                <Area
-                  type="monotone"
-                  dataKey="elevation"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2}
-                  fill="url(#elevGradient)"
-                />
+                <Area type="monotone" dataKey="elevation" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#elevGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Route Map / Steps */}
         <div className="mb-16">
-          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">Route Guide</h2>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">{t("trailDetail.routeGuide")}</h2>
           <div className="space-y-0">
             {trail.routeSteps.map((step, i) => (
               <div key={i} className="flex gap-4">
@@ -147,9 +126,8 @@ const TrailDetail = () => {
           </div>
         </div>
 
-        {/* Highlights */}
         <div className="mb-16">
-          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">Trail Highlights</h2>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">{t("trailDetail.highlights")}</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {trail.highlights.map((h) => (
               <div key={h} className="flex items-center gap-3 bg-card rounded-lg p-4 shadow-sm">
@@ -160,9 +138,8 @@ const TrailDetail = () => {
           </div>
         </div>
 
-        {/* Photo Gallery */}
         <div className="mb-24">
-          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">Photo Gallery</h2>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-6">{t("trailDetail.gallery")}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {trail.gallery.map((img, i) => (
               <button
@@ -174,14 +151,7 @@ const TrailDetail = () => {
                     : "opacity-80 hover:opacity-100"
                 }`}
               >
-                <img
-                  src={img}
-                  alt={`${trail.title} photo ${i + 1}`}
-                  loading="lazy"
-                  width={640}
-                  height={400}
-                  className="w-full h-full object-cover"
-                />
+                <img src={img} alt={`${localize(trail.title, lang)} photo ${i + 1}`} loading="lazy" width={640} height={400} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
