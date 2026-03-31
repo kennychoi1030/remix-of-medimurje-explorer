@@ -45,7 +45,7 @@ export async function fetchTrails(_params?: {
   if (_params?.search) {
     const q = _params.search.toLowerCase();
     results = results.filter(
-      (t) => t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
+      (t) => t.title.en.toLowerCase().includes(q) || t.title.zh.includes(q) || t.description.en.toLowerCase().includes(q) || t.description.zh.includes(q)
     );
   }
   return results;
@@ -59,7 +59,7 @@ export async function createTrail(data: Omit<TrailData, "slug">): Promise<TrailD
   await delay();
   const trail: TrailData = {
     ...data,
-    slug: data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    slug: data.title.en.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
   };
   trailStore = [trail, ...trailStore];
   return trail;

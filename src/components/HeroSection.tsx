@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-hk-hiking.jpg";
 import { ChevronDown } from "lucide-react";
 import EditableText from "@/components/EditableText";
+import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
-  const [subtitle, setSubtitle] = useState("Hong Kong Hiking");
-  const [titleLine1, setTitleLine1] = useState("Explore");
-  const [titleLine2, setTitleLine2] = useState("Hong Kong Trails");
-  const [desc, setDesc] = useState("Discover world-class hiking trails with breathtaking views of mountains, coastlines, and the iconic skyline.");
+  const { t, i18n } = useTranslation();
+  const [subtitle, setSubtitle] = useState(t("hero.subtitle"));
+  const [titleLine1, setTitleLine1] = useState(t("hero.titleLine1"));
+  const [titleLine2, setTitleLine2] = useState(t("hero.titleLine2"));
+  const [desc, setDesc] = useState(t("hero.description"));
+
+  useEffect(() => {
+    setSubtitle(t("hero.subtitle"));
+    setTitleLine1(t("hero.titleLine1"));
+    setTitleLine2(t("hero.titleLine2"));
+    setDesc(t("hero.description"));
+  }, [i18n.language, t]);
 
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
