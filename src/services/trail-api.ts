@@ -54,6 +54,7 @@ export async function fetchTrails(_params?: {
 /** POST /api/trails */
 export async function createTrail(data: Omit<TrailData, "slug">): Promise<TrailData> {
   // TODO: Connect to Laravel API — POST /api/trails
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   const trail: TrailData = {
