@@ -34,6 +34,7 @@ export async function createProduct(data: Omit<ProductData, "id" | "created_at">
 /** PUT /api/products/:id */
 export async function updateProduct(id: string, data: Partial<ProductData>): Promise<ProductData> {
   // TODO: Connect to Laravel API — PUT /api/products/${id}
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   productStore = productStore.map((p) => (p.id === id ? { ...p, ...data } : p));

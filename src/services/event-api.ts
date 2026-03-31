@@ -34,6 +34,7 @@ export async function createEvent(data: Omit<EventData, "id" | "created_at">): P
 /** PUT /api/events/:id */
 export async function updateEvent(id: string, data: Partial<EventData>): Promise<EventData> {
   // TODO: Connect to Laravel API — PUT /api/events/${id}
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   eventStore = eventStore.map((e) => (e.id === id ? { ...e, ...data } : e));

@@ -68,6 +68,7 @@ export async function createTrail(data: Omit<TrailData, "slug">): Promise<TrailD
 /** PUT /api/trails/:slug */
 export async function updateTrail(slug: string, data: Partial<TrailData>): Promise<TrailData> {
   // TODO: Connect to Laravel API — PUT /api/trails/${slug}
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   trailStore = trailStore.map((t) => (t.slug === slug ? { ...t, ...data } : t));
