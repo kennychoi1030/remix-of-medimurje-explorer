@@ -19,6 +19,7 @@ export const getEventStore = () => eventStore;
 /** POST /api/events */
 export async function createEvent(data: Omit<EventData, "id" | "created_at">): Promise<EventData> {
   // TODO: Connect to Laravel API — POST /api/events
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   const event: EventData = {
