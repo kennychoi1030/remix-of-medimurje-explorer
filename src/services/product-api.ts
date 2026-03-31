@@ -19,6 +19,7 @@ export const getProductStore = () => productStore;
 /** POST /api/products */
 export async function createProduct(data: Omit<ProductData, "id" | "created_at">): Promise<ProductData> {
   // TODO: Connect to Laravel API — POST /api/products
+  // TODO: Connect to Laravel API - Send as Multipart/Form-Data. See Laravel Controller Request validation.
   // TODO: Laravel backend should handle this featured flag
   await delay();
   const product: ProductData = {
