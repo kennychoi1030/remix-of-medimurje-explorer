@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "trails": "Trails",
+    "exploreGBA": "Explore GBA",
+    "events": "Events",
+    "shop": "Shop",
+    "aiAssistant": "AI Assistant",
+    "bookNow": "Book Now",
+    "login": "Login"
+  },
+  "hero": {
+    "subtitle": "Hong Kong Hiking",
+    "titleLine1": "Explore",
+    "titleLine2": "Hong Kong Trails",
+    "description": "Discover world-class hiking trails with breathtaking views of mountains, coastlines, and the iconic skyline."
+  },
+  "trails": {
+    "subtitle": "Featured Trails",
+    "title": "Iconic Hong Kong Hikes",
+    "description": "From coastal cliff walks to misty mountain ridges, Hong Kong offers some of the most dramatic hiking in Asia.",
+    "exploreMore": "Explore More Trails",
+    "createNew": "Create New Trail",
+    "allTrails": "All Trails",
+    "exploreEvery": "Explore Every Trail",
+    "browseDesc": "Browse, filter, and find the perfect hike for your next adventure.",
+    "noFeatured": "No featured trails set yet",
+    "goToList": "Go to listing to set featured content",
+    "noResults": "No trails found",
+    "noResultsDesc": "We couldn't find any trails matching your filters. Try adjusting your search criteria or reset all filters.",
+    "resetFilters": "Reset Filters",
+    "searchPlaceholder": "Search trails...",
+    "allDifficulties": "All Difficulties",
+    "allLocations": "All Locations",
+    "allDurations": "All Durations",
+    "filters": "Filters",
+    "found_one": "{{count}} trail found",
+    "found_other": "{{count}} trails found"
+  },
+  "events": {
+    "subtitle": "Upcoming Events",
+    "title": "Join Our Adventures",
+    "exploreMore": "Explore More Events",
+    "createNew": "Create New Event",
+    "bookNow": "Book Now",
+    "allEvents": "All Events",
+    "browseDesc": "Browse and book upcoming hiking events across Hong Kong.",
+    "noFeatured": "No featured events set yet",
+    "goToList": "Go to listing to set featured content",
+    "noResults": "No events found matching your criteria.",
+    "searchPlaceholder": "Search events...",
+    "allLocations": "All Locations"
+  },
+  "shop": {
+    "subtitle": "Gear Shop",
+    "title": "Equip Your Adventure",
+    "description": "Premium hiking gear and apparel, selected by our trail experts for Hong Kong's unique terrain.",
+    "browseAll": "Browse All Products",
+    "createNew": "Create New Product",
+    "addToCart": "Add to Cart",
+    "allProducts": "All Products",
+    "browseDesc": "Premium hiking gear selected for Hong Kong's unique terrain.",
+    "noFeatured": "No featured products set yet",
+    "goToList": "Go to listing to set featured content",
+    "noResults": "No products found matching your criteria.",
+    "searchPlaceholder": "Search products...",
+    "allCategories": "All Categories"
+  },
+  "stats": {
+    "trails": "Hiking Trails",
+    "parks": "Country Parks",
+    "hikers": "Happy Hikers",
+    "events": "Events per Year"
+  },
+  "footer": {
+    "tagline": "Your premium guide to Hong Kong's best hiking experiences. We connect outdoor enthusiasts with unforgettable trails, guided events, and quality gear.",
+    "explore": "Explore",
+    "hikingTrails": "Hiking Trails",
+    "gearShop": "Gear Shop",
+    "safetyGuide": "Trail Safety Guide",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "admin": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "featured": "Homepage Featured",
+    "featuredToggle": "Display on Homepage (Featured)",
+    "featuredCount": "Currently {{count}} featured items (recommended: 3-6)",
+    "cancel": "Cancel",
+    "editTrail": "Edit Trail",
+    "createTrail": "Create New Trail",
+    "editEvent": "Edit Event",
+    "createEvent": "Create New Event",
+    "editProduct": "Edit Product",
+    "createProduct": "Create New Product",
+    "updateBtn": "Update",
+    "createBtn": "Create"
+  },
+  "trailDetail": {
+    "back": "Back",
+    "distance": "Distance",
+    "duration": "Duration",
+    "elevation": "Elevation",
+    "difficulty": "Difficulty",
+    "bestSeason": "Best Season",
+    "location": "Location",
+    "elevationProfile": "Elevation Profile",
+    "routeGuide": "Route Guide",
+    "highlights": "Trail Highlights",
+    "gallery": "Photo Gallery",
+    "notFound": "Trail Not Found",
+    "backToHome": "← Back to Home"
+  },
+  "login": {
+    "title": "Member Login",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "common": {
+    "reset": "Reset"
+  }
+}
