@@ -30,7 +30,7 @@ const emptyForm = {
   images: [] as string[],
   slug: "",
   category: "gear" as "footwear" | "bags" | "gear",
-  specs: {} as Record<string, unknown>,
+  specs: {} as unknown,
   isFeatured: false,
 };
 
