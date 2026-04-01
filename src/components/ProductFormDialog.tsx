@@ -213,7 +213,7 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         image: imagePreview,
         images: [imagePreview].filter(Boolean),
         category: category as ProductData["category"],
-        specs: finalSpecs as ProductData["specs"],
+        specs: finalSpecs as unknown as ProductData["specs"],
         isFeatured,
       };
 
