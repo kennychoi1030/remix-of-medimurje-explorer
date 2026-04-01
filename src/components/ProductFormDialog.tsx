@@ -27,6 +27,10 @@ const emptyForm = {
   description: { ...emptyLocalizable },
   badge: "" as string | null,
   image: "",
+  images: [] as string[],
+  slug: "",
+  category: "gear" as "footwear" | "bags" | "gear",
+  specs: {} as unknown,
   isFeatured: false,
 };
 
@@ -47,6 +51,10 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         description: { ...product.description },
         badge: product.badge ?? "",
         image: product.image,
+        images: [...product.images],
+        slug: product.slug,
+        category: product.category,
+        specs: product.specs as unknown,
         isFeatured: product.isFeatured,
       });
       setImagePreview(product.image);
@@ -77,7 +85,11 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         originalPrice: form.originalPrice || undefined,
         badge: form.badge || null,
         isFeatured: form.isFeatured,
-      });
+        slug: form.slug || form.title.en.toLowerCase().replace(/\s+/g, "-"),
+        images: form.images.length > 0 ? form.images : [form.image].filter(Boolean),
+        category: form.category,
+        specs: form.specs,
+      } as Omit<ProductData, "id" | "created_at">);
       onOpenChange(false);
     } finally {
       setLoading(false);

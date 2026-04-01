@@ -121,5 +121,23 @@
   },
   "common": {
     "reset": "重設"
+  },
+  "product": {
+    "notFound": "找不到商品",
+    "backToShop": "返回商店",
+    "size": "尺碼",
+    "material": "材質",
+    "specifications": "規格",
+    "capacity": "容量",
+    "weight": "重量",
+    "dimensions": "尺寸",
+    "includes": "包含",
+    "totalWeight": "總重量",
+    "descriptionTab": "描述",
+    "categoryLabel": "分類",
+    "gender": "性別",
+    "availableSizes": "可選尺碼",
+    "waterproof": "防水",
+    "relatedProducts": "相關商品"
   }
 }

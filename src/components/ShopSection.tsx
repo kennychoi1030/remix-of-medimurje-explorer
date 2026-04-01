@@ -125,14 +125,14 @@ const ShopSection = () => {
                 className={`group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 ${isInView ? "animate-fade-in" : "opacity-0"}`}
                 style={{ animationDelay: `${0.3 + i * 0.1}s` }}
               >
-                <div className="relative overflow-hidden">
+                <Link to={`/product/${product.slug}`} className="relative overflow-hidden">
                   <img src={product.image} alt={localize(product.title, lang)} loading="lazy" width={800} height={600} className="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110" />
                   {product.badge && (
                     <span className={`absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold ${product.badge === "Sale" ? "bg-destructive text-destructive-foreground" : "bg-primary text-primary-foreground"}`}>
                       {product.badge}
                     </span>
                   )}
-                </div>
+                </Link>
                 <div className="p-4">
                   <h3 className="font-display text-lg font-semibold text-card-foreground mb-1">{localize(product.title, lang)}</h3>
                   <div className="flex items-center gap-2 mb-2">
