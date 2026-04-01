@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { ShoppingBag, Search, X, Plus, Pencil, Trash2, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { products as staticProducts, ProductData } from "@/data/products";
 import { initProductStore, getProductStore, createProduct, updateProduct, deleteProduct, restoreProduct } from "@/services/product-api";
 import { useAdmin } from "@/context/AdminContext";
