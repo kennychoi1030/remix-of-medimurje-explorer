@@ -139,5 +139,23 @@
     "availableSizes": "Available Sizes",
     "waterproof": "Waterproof",
     "relatedProducts": "Related Products"
+  },
+  "specs": {
+    "gender": "Gender",
+    "sizes": "Sizes",
+    "sizesHint": "Comma-separated values (e.g. 36,37,38 or S,M,L,XL)",
+    "material": "Material",
+    "waterproof": "Waterproof",
+    "weight": "Weight",
+    "capacity": "Capacity",
+    "dimensions": "Dimensions",
+    "categories": {
+      "clothes": "Clothes",
+      "shoes": "Shoes",
+      "bags": "Bags"
+    },
+    "customSpecs": "Custom Specifications",
+    "addCustom": "Add Custom Spec",
+    "customHint": "Add extra specs not covered by the category template."
   }
 }
