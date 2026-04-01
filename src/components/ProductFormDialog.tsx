@@ -27,6 +27,10 @@ const emptyForm = {
   description: { ...emptyLocalizable },
   badge: "" as string | null,
   image: "",
+  images: [] as string[],
+  slug: "",
+  category: "gear" as "footwear" | "bags" | "gear",
+  specs: {} as Record<string, unknown>,
   isFeatured: false,
 };
 
