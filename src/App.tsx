@@ -12,6 +12,7 @@ import GBAExplore from "./pages/GBAExplore.tsx";
 import TrailsListing from "./pages/TrailsListing.tsx";
 import EventsListing from "./pages/EventsListing.tsx";
 import ShopListing from "./pages/ShopListing.tsx";
+import ProductDetail from "./pages/ProductDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
