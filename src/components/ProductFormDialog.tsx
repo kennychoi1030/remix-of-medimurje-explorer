@@ -85,7 +85,11 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         originalPrice: form.originalPrice || undefined,
         badge: form.badge || null,
         isFeatured: form.isFeatured,
-      });
+        slug: form.slug || form.title.en.toLowerCase().replace(/\s+/g, "-"),
+        images: form.images.length > 0 ? form.images : [form.image].filter(Boolean),
+        category: form.category,
+        specs: form.specs,
+      } as Omit<ProductData, "id" | "created_at">);
       onOpenChange(false);
     } finally {
       setLoading(false);

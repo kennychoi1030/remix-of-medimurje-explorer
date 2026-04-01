@@ -33,6 +33,7 @@ const App = () => (
             <Route path="/explore" element={<GBAExplore />} />
             <Route path="/events" element={<EventsListing />} />
             <Route path="/shop" element={<ShopListing />} />
+            <Route path="/product/:slug" element={<ProductDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
