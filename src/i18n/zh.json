@@ -139,5 +139,23 @@
     "availableSizes": "可選尺碼",
     "waterproof": "防水",
     "relatedProducts": "相關商品"
+  },
+  "specs": {
+    "gender": "性別",
+    "sizes": "尺碼",
+    "sizesHint": "以逗號分隔（例如 36,37,38 或 S,M,L,XL）",
+    "material": "材質",
+    "waterproof": "防水",
+    "weight": "重量",
+    "capacity": "容量",
+    "dimensions": "尺寸",
+    "categories": {
+      "clothes": "服裝",
+      "shoes": "鞋類",
+      "bags": "背包"
+    },
+    "customSpecs": "自定義規格",
+    "addCustom": "新增自定義規格",
+    "customHint": "新增分類範本未涵蓋的額外規格。"
   }
 }
