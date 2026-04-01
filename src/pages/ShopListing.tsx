@@ -113,7 +113,7 @@ const ShopListing = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filtered.map((product) => (
               <div key={product.id} className="group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                <div className="relative overflow-hidden">
+                <Link to={`/product/${product.slug}`} className="relative overflow-hidden">
                   <img src={product.image} alt={localize(product.title, lang)} loading="lazy" width={800} height={600} className="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-110" />
                   {product.badge && (
                     <span className={`absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold ${product.badge === "Sale" ? "bg-destructive text-destructive-foreground" : "bg-primary text-primary-foreground"}`}>
