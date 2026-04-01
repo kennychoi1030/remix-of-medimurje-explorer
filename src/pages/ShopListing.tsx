@@ -120,7 +120,7 @@ const ShopListing = () => {
                       {product.badge}
                     </span>
                   )}
-                </div>
+                </Link>
                 <div className="p-4">
                   <h3 className="font-display text-lg font-semibold text-card-foreground mb-1">{localize(product.title, lang)}</h3>
                   <div className="flex items-center gap-2 mb-2">

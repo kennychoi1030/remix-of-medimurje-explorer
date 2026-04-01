@@ -121,5 +121,23 @@
   },
   "common": {
     "reset": "Reset"
+  },
+  "product": {
+    "notFound": "Product Not Found",
+    "backToShop": "Back to Shop",
+    "size": "Size",
+    "material": "Material",
+    "specifications": "Specifications",
+    "capacity": "Capacity",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "includes": "Includes",
+    "totalWeight": "Total Weight",
+    "descriptionTab": "Description",
+    "categoryLabel": "Category",
+    "gender": "Gender",
+    "availableSizes": "Available Sizes",
+    "waterproof": "Waterproof",
+    "relatedProducts": "Related Products"
   }
 }
