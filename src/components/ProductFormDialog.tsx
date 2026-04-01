@@ -51,6 +51,10 @@ const ProductFormDialog = ({ open, onOpenChange, product, onSubmit, featuredCoun
         description: { ...product.description },
         badge: product.badge ?? "",
         image: product.image,
+        images: [...product.images],
+        slug: product.slug,
+        category: product.category,
+        specs: product.specs as Record<string, unknown>,
         isFeatured: product.isFeatured,
       });
       setImagePreview(product.image);
