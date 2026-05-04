@@ -1,11 +1,13 @@
 import { Menu, X, User, Globe } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAdmin } from "@/context/AdminContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const { isAdmin } = useAdmin();
 
   const navLinks = [
     { label: t("nav.trails"), href: "#trails" },
