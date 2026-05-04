@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AdminProvider } from "@/context/AdminContext";
+import { AdminProvider, useAdmin } from "@/context/AdminContext";
+import AdminBar, { AdminToggle } from "@/components/AdminBar";
 import Index from "./pages/Index.tsx";
 import TrailDetail from "./pages/TrailDetail.tsx";
 import AIAssistant from "./pages/AIAssistant.tsx";
@@ -17,6 +18,17 @@ import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
+const AdminShell = ({ children }: { children: React.ReactNode }) => {
+  const { isAdmin } = useAdmin();
+  return (
+    <>
+      <AdminBar />
+      <AdminToggle />
+      <div className={isAdmin ? "pt-10" : ""}>{children}</div>
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -24,19 +36,21 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/trails" element={<TrailsListing />} />
-            <Route path="/trail/:slug" element={<TrailDetail />} />
-            <Route path="/ai-assistant" element={<AIAssistant />} />
-            <Route path="/booking" element={<Booking />} />
-            <Route path="/explore" element={<GBAExplore />} />
-            <Route path="/events" element={<EventsListing />} />
-            <Route path="/shop" element={<ShopListing />} />
-            <Route path="/product/:slug" element={<ProductDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AdminShell>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/trails" element={<TrailsListing />} />
+              <Route path="/trail/:slug" element={<TrailDetail />} />
+              <Route path="/ai-assistant" element={<AIAssistant />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/explore" element={<GBAExplore />} />
+              <Route path="/events" element={<EventsListing />} />
+              <Route path="/shop" element={<ShopListing />} />
+              <Route path="/product/:slug" element={<ProductDetail />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AdminShell>
         </BrowserRouter>
       </AdminProvider>
     </TooltipProvider>

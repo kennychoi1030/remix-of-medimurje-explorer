@@ -1,11 +1,13 @@
 import { Menu, X, User, Globe } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAdmin } from "@/context/AdminContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const { isAdmin } = useAdmin();
 
   const navLinks = [
     { label: t("nav.trails"), href: "#trails" },
@@ -25,7 +27,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <nav className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isAdmin ? "top-10" : "top-0"}`}>
         <div className="absolute inset-0 bg-foreground/20 backdrop-blur-md" />
         <div className="relative max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
           <a href="/" className="font-display text-2xl font-semibold text-primary-foreground tracking-wide">
